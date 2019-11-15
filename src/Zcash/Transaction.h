@@ -33,6 +33,8 @@ struct Transaction {
     std::vector<Bitcoin::TransactionOutput> outputs;
     std::array<byte, 4> branchId;
 
+    TWCoinType coinType;
+
     Transaction() = default;
 
     Transaction(uint32_t version, uint32_t versionGroupId, uint32_t lockTime, uint32_t expiryHeight,

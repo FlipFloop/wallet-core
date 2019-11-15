@@ -72,6 +72,15 @@ TEST(Coin, ValidateAddressBitcoinCash) {
     ASSERT_EQ(normalizeAddress(TWCoinTypeBitcoinCash, "1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2"), "1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2");
 }
 
+TEST(Coin, ValidateAddressBitcoinGold) {
+    EXPECT_TRUE(validateAddress(TWCoinTypeBitcoinGold, "btg1qhkfq3zahaqkkzx5mjnamwjsfpq2jk7z0eg8day"));
+    EXPECT_TRUE(validateAddress(TWCoinTypeBitcoinGold, "GP8TQhqt5anHqRZPzr9CdiGsNZSVDHane1"));
+    EXPECT_TRUE(validateAddress(TWCoinTypeBitcoinGold, "AeG8bfQ8gFYRnd1bxmNeHstC1a18j6fGZv"));
+
+    EXPECT_FALSE(validateAddress(TWCoinTypeBitcoinGold, "btg1qhkfq3zahaqkkzx5mjnamwjsfpq2jk7z0eg8dag"));
+    EXPECT_FALSE(validateAddress(TWCoinTypeBitcoinGold, "AeG8bfQ8gFYRnd1bxmNeHstC1a18j6fGZx"));
+}
+
 TEST(Coin, ValidateAddressDogecoin) {
     EXPECT_TRUE(validateAddress(TWCoinTypeDogecoin, "DHKM6NDUUv9kaHAGi1QU7MRBNKfQiAdP3F"));
 
