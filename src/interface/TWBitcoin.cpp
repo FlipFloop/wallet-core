@@ -13,3 +13,7 @@ bool TWBitcoinSigHashTypeIsSingle(enum TWBitcoinSigHashType type) {
 bool TWBitcoinSigHashTypeIsNone(enum TWBitcoinSigHashType type) {
     return (type & 0x1f) == TWBitcoinSigHashTypeNone;
 }
+
+bool TWBitcoinSigHashTypeIsFork(enum TWBitcoinSigHashType type) {
+    return (type & TWBitcoinSigHashTypeFork) == TWBitcoinSigHashTypeFork;
+}

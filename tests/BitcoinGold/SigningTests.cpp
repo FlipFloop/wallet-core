@@ -86,9 +86,6 @@ TEST(BitcoinGold, SignTransaction) {
     auto txPlan = TransactionBuilder::plan(signingInput);
     TransactionSigner<Transaction> signer(std::move(signingInput), txPlan);
 
-    const auto& tx = signer.transaction;
-    ASSERT_EQ(tx.coinType, TWCoinTypeBitcoinGold);
-
     const auto result = signer.sign();
     ASSERT_TRUE(result.isSuccess());
 

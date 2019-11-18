@@ -38,9 +38,6 @@ struct Transaction {
     /// A list of 1 or more transaction outputs or destinations for coins
     std::vector<TransactionOutput> outputs;
 
-    /// Coin type to distinguish forks
-    TWCoinType coinType;
-
     TW::Hash::Hasher hasher = TW::Hash::sha256d;
 
     Transaction() = default;
@@ -53,7 +50,7 @@ struct Transaction {
 
     /// Generates the signature pre-image.
     std::vector<uint8_t> getPreImage(const Script& scriptCode, size_t index, enum TWBitcoinSigHashType hashType,
-                                     uint64_t amount) const;
+                                     uint64_t amount, int forkId) const;
     std::vector<uint8_t> getPrevoutHash() const;
     std::vector<uint8_t> getSequenceHash() const;
     std::vector<uint8_t> getOutputsHash() const;
@@ -63,7 +60,7 @@ struct Transaction {
 
     /// Generates the signature hash for this transaction.
     std::vector<uint8_t> getSignatureHash(const Script& scriptCode, size_t index, enum TWBitcoinSigHashType hashType,
-                                          uint64_t amount, enum SignatureVersion version) const;
+                                          uint64_t amount, enum SignatureVersion version, int forkId) const;
 
     void serializeInput(size_t subindex, const Script&, size_t index, enum TWBitcoinSigHashType hashType,
                         std::vector<uint8_t>& data) const;
@@ -74,7 +71,8 @@ struct Transaction {
   private:
     /// Generates the signature hash for Witness version 0 scripts.
     std::vector<uint8_t> getSignatureHashWitnessV0(const Script& scriptCode, size_t index,
-                                                   enum TWBitcoinSigHashType hashType, uint64_t amount) const;
+                                                   enum TWBitcoinSigHashType hashType, uint64_t amount,
+                                                   int forkId) const;
 
     /// Generates the signature hash for for scripts other than witness scripts.
     std::vector<uint8_t> getSignatureHashBase(const Script& scriptCode, size_t index,

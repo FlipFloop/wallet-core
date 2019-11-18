@@ -25,4 +25,7 @@ bool TWBitcoinSigHashTypeIsSingle(enum TWBitcoinSigHashType type);
 TW_EXPORT_METHOD
 bool TWBitcoinSigHashTypeIsNone(enum TWBitcoinSigHashType type);
 
+TW_EXPORT_METHOD
+bool TWBitcoinSigHashTypeIsFork(enum TWBitcoinSigHashType type);
+
 TW_EXTERN_C_END

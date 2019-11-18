@@ -55,7 +55,7 @@ Result<void> TransactionSigner<Transaction, TransactionBuilder>::sign(Script scr
     std::vector<Data> witnessStack;
 
     uint32_t signatureVersion = [this]() {
-        if ((input.hash_type() & TWBitcoinSigHashTypeFork) != 0) {
+        if (TWBitcoinSigHashTypeIsFork(static_cast<TWBitcoinSigHashType>(input.hash_type()))) {
             return WITNESS_V0;
         } else {
             return BASE;
@@ -209,8 +209,13 @@ Data TransactionSigner<Transaction, TransactionBuilder>::createSignature(const T
                                                      const Script& script, const Data& key,
                                                      size_t index, Amount amount,
                                                      uint32_t version) {
+    // ForkID: BTG is 79 and BCH is 0
+    int forkId = 0;
+    if (input.coin_type() == TWCoinTypeBitcoinGold) {
+        forkId = 79;
+    }
     auto sighash = transaction.getSignatureHash(script, index, static_cast<TWBitcoinSigHashType>(input.hash_type()), amount,
-                                                static_cast<SignatureVersion>(version));
+                                                static_cast<SignatureVersion>(version), forkId);
     auto pk = PrivateKey(key);
     auto sig = pk.signAsDER(Data(begin(sighash), end(sighash)), TWCurveSECP256k1);
     if (sig.empty()) {

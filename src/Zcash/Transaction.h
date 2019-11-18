@@ -65,7 +65,7 @@ struct Transaction {
 
     Data getSignatureHash(const Bitcoin::Script& scriptCode, size_t index,
                           enum TWBitcoinSigHashType hashType, uint64_t amount,
-                          enum Bitcoin::SignatureVersion version) const;
+                          enum Bitcoin::SignatureVersion version, int unusedForkId = 0) const;
 
     /// Converts to Protobuf model
     Bitcoin::Proto::Transaction proto() const;

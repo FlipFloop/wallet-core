@@ -16,7 +16,8 @@
 using namespace TW::Bitcoin;
 
 std::vector<uint8_t> Transaction::getPreImage(const Script& scriptCode, size_t index,
-                                              enum TWBitcoinSigHashType hashType, uint64_t amount) const {
+                                              enum TWBitcoinSigHashType hashType, uint64_t amount,
+                                              int forkId) const {
     assert(index < inputs.size());
 
     auto data = std::vector<uint8_t>{};
@@ -68,8 +69,8 @@ std::vector<uint8_t> Transaction::getPreImage(const Script& scriptCode, size_t i
 
     // Sighash type (add forkid if applicable)
     unsigned int forkHashType = static_cast<unsigned int>(hashType);
-    if (coinType == TWCoinTypeBitcoinGold) {
-        forkHashType |= (79 << 8);
+    if (TWBitcoinSigHashTypeIsFork(hashType)) {
+        forkHashType |= (forkId << 8);
     }
     encode32LE(forkHashType, data);
 
@@ -134,20 +135,20 @@ void Transaction::encode(bool witness, std::vector<uint8_t>& data) const {
 
 std::vector<uint8_t> Transaction::getSignatureHash(const Script& scriptCode, size_t index,
                                                    enum TWBitcoinSigHashType hashType, uint64_t amount,
-                                                   enum SignatureVersion version) const {
+                                                   enum SignatureVersion version, int forkId) const {
     switch (version) {
     case BASE:
         return getSignatureHashBase(scriptCode, index, hashType);
     case WITNESS_V0:
-        return getSignatureHashWitnessV0(scriptCode, index, hashType, amount);
+        return getSignatureHashWitnessV0(scriptCode, index, hashType, amount, forkId);
     }
 }
 
 /// Generates the signature hash for Witness version 0 scripts.
 std::vector<uint8_t> Transaction::getSignatureHashWitnessV0(const Script& scriptCode, size_t index,
                                                             enum TWBitcoinSigHashType hashType,
-                                                            uint64_t amount) const {
-    auto preimage = getPreImage(scriptCode, index, hashType, amount);
+                                                            uint64_t amount, int forkId) const {
+    auto preimage = getPreImage(scriptCode, index, hashType, amount, forkId);
     auto hash = TW::Hash::hash(hasher, preimage);
     return hash;
 }
