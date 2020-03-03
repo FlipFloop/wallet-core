@@ -67,6 +67,7 @@ TWData* _Nonnull TWAnySignerSign(TWData* _Nonnull data, enum TWCoinType coin) {
         return AnySign<Binance::Signer, Binance::Proto::SigningInput>(data);
     case TWCoinTypeBitcoin:
     case TWCoinTypeBitcoinCash:
+    case TWCoinTypeBitcoinGold:
     case TWCoinTypeDash:
     case TWCoinTypeDigiByte:
     case TWCoinTypeDogecoin:
